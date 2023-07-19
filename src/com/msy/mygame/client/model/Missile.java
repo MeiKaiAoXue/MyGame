@@ -6,22 +6,20 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * 鱼叉障碍物
+ * 导弹
  */
-public class Obstacle_1 extends Obstacle implements PaintElement{
-    public Obstacle_1() {
+public class Missile extends Obstacle implements PaintElement{
+    public Missile(int y) {
         super();
-        this.setY(0);
-        this.setWidth(30);
-        this.setHeight(500);
+        this.setY(y);
+        this.setWidth(100);
+        this.setHeight(30);
         try {
-            this.setImage(ImageIO.read(new File("Image/11.png")));
+            this.setImage(ImageIO.read(new File("Image/daodan.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
-
     @Override
     public void painElement(Graphics g) {
         g.drawImage(this.getImage(), this.getX(), this.getY(), this.getWidth(), this.getHeight(),null);

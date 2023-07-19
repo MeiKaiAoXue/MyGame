@@ -46,10 +46,10 @@ public class WindowFrame extends JFrame implements Runnable{
                 e.printStackTrace();
             }
         }
-
-        //显示下一界面
-        new GameFrame();
         //关闭加载界面
         dispose();
+        //显示下一界面
+        new GameFrame();
+
     }
 }

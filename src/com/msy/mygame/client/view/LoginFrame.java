@@ -1,5 +1,7 @@
 package com.msy.mygame.client.view;
 
+import com.msy.mygame.client.controller.ClientConnect;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -87,9 +89,10 @@ public class LoginFrame extends JFrame {
                     //登陆成功
                     JOptionPane.showMessageDialog(null, "欢迎 " + userName + " 来到我的游戏");
                     //跳转到下一界面
+                    dispose();
                     new MainFrame();
                     //关闭当前界面
-                    dispose();
+
                 } else if("".equals(userName) || "".equals(password)){
                     //不能为空
                     JOptionPane.showMessageDialog(null, "用户名 / 密码不能为空，请重新输入！");
@@ -130,7 +133,8 @@ public class LoginFrame extends JFrame {
         this.setIconImage(new ImageIcon("Image/115.png").getImage());//设置窗体图标
         this.setVisible(true);
 
-
+        //连接服务器
+        new ClientConnect();
 
     }
 

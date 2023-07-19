@@ -6,20 +6,19 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * 鱼叉障碍物
+ * 金币
  */
-public class Obstacle_1 extends Obstacle implements PaintElement{
-    public Obstacle_1() {
+public class Gold extends Obstacle implements PaintElement{
+    public Gold(int y) {
         super();
-        this.setY(0);
-        this.setWidth(30);
-        this.setHeight(500);
+        this.setY(y);
+        this.setWidth(20);
+        this.setHeight(20);
         try {
-            this.setImage(ImageIO.read(new File("Image/11.png")));
+            this.setImage(ImageIO.read(new File("Image/21.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override

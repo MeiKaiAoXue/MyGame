@@ -73,24 +73,33 @@ public class ServerConnect {
         public void run() {
             try {
                 inputStream = new ObjectInputStream(cSocket.getInputStream());
-                while (true) {
+//                while (true) {
                     //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
-                    try {
-                        Object receivedData = inputStream.readObject();
-                        broadcastMessage(receivedData);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+//                    try {
+//                        Object receivedData = inputStream.readObject();
+//                        broadcastMessage(receivedData);
+//                    } catch (ClassNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+  //              }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {
                 try {
-                    inputStream.close();
-                    outputStream.close();
-                    cSocket.close();
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+
+                    if (outputStream != null) {
+                        outputStream.close();
+                    }
+                    if (cSocket != null) {
+                        cSocket.close();
+                    }
                     //客户端断开连接时，移除对应的输出流
-                    clientOutputStreams.remove(cSocket);
+                    if (!clientOutputStreams.contains(cSocket)) {
+                        clientOutputStreams.remove(cSocket);
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -109,5 +118,9 @@ public class ServerConnect {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new ServerConnect();
     }
 }
