@@ -73,7 +73,7 @@ public class ServerConnect {
         public void run() {
             try {
                 inputStream = new ObjectInputStream(cSocket.getInputStream());
-//                while (true) {
+                while (true) {
                     //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
 //                    try {
 //                        Object receivedData = inputStream.readObject();
@@ -81,20 +81,23 @@ public class ServerConnect {
 //                    } catch (ClassNotFoundException e) {
 //                        throw new RuntimeException(e);
 //                    }
-  //              }
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {
                 try {
                     if (inputStream != null) {
                         inputStream.close();
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 服务器输入流已断开");
                     }
 
                     if (outputStream != null) {
                         outputStream.close();
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 服务器输出流已断开");
                     }
                     if (cSocket != null) {
                         cSocket.close();
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 已断开");
                     }
                     //客户端断开连接时，移除对应的输出流
                     if (!clientOutputStreams.contains(cSocket)) {

@@ -51,11 +51,11 @@ public class ClientConnect {
 //            //时刻发送玩家的总得分数据进行实时滚动排行，
 //            // 发送玩家的位置信息，在各个客户端同步显示其他玩家的位置
 //            try {
-//                while (true) {
+                while (true) {
 //                    Data data_send = new Data();
 //                    outputStream.writeObject(data_send);
 //                    outputStream.flush();
-//                }
+                }
 //            } catch (IOException e) {
 //                throw new RuntimeException(e);
 //            }
@@ -67,12 +67,15 @@ public class ClientConnect {
             try {
                 if (outputStream != null) {
                     outputStream.close();
+                    System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的输出流关闭");
                 }
                 if (inputStream != null) {
                     inputStream.close();
+                    System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的输入流关闭");
                 }
                 if (cSocket != null) {
                     cSocket.close();
+                    System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的套接字关闭");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

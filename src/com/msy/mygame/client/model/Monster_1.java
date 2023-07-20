@@ -11,9 +11,10 @@ import java.io.IOException;
 public class Monster_1 extends Obstacle implements PaintElement{
     public Monster_1() {
         super();
-        this.setY(580);
-        this.setWidth(50);
-        this.setHeight(50);
+        type = "Monster_1";
+        this.setY(380);
+        this.setWidth(80);
+        this.setHeight(80);
         try {
             this.setImage(ImageIO.read(new File("image/a4.png")));
         } catch (IOException e) {
@@ -21,7 +22,7 @@ public class Monster_1 extends Obstacle implements PaintElement{
         }
     }
     @Override
-    public void painElement(Graphics g) {
+    public void paintElement(Graphics g) {
         g.drawImage(this.getImage(), this.getX(), this.getY(), this.getWidth(), this.getHeight(),null);
     }
 }

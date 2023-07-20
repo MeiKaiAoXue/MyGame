@@ -69,10 +69,16 @@ public class MainFrame extends JFrame implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource().equals(start)) {
-            //关闭当前界面
-            //dispose();
+            System.out.println("点击开始游戏");
+
             //跳转下一界面
             new Thread(new WindowFrame()).start();
+            System.out.println("启动加载界面");
+            //关闭当前界面
+            dispose();
+            System.out.println("关闭主界面");
+
+
 
         } else if (e.getSource().equals(help)) {
             JOptionPane.showMessageDialog(null, "本开发者也不知道怎么帮助你！！！");

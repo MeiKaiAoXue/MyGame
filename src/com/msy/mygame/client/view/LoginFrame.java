@@ -26,14 +26,16 @@ public class LoginFrame extends JFrame {
     JLabel usernameLabel = null;
     JLabel pwLabel = null;
     JLabel networkLabel = null;
-    public JTextField usernameTextField = null;
+    JTextField usernameTextField = null;
     JTextField pwTextField = null;
     JTextField networkTextField = null;
     JButton loginButton = null;
     JButton cancelButton = null;
     JButton signupButton = null;
 
+    public static String userName = "";
 
+    public static String password = "";
 
     public LoginFrame() {
         //初始化GUI变量
@@ -83,15 +85,19 @@ public class LoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("已点击登陆按钮");
-                String userName = usernameTextField.getText();
-                String password = pwTextField.getText();
+                userName = usernameTextField.getText();
+                password = pwTextField.getText();
                 if (userName.equals("mei") && password.equals("123456")) {
                     //登陆成功
                     JOptionPane.showMessageDialog(null, "欢迎 " + userName + " 来到我的游戏");
-                    //跳转到下一界面
+
+                    // 关闭当前界面
                     dispose();
+                    System.out.println("关闭登陆界面");
+                    //跳转到下一界面
                     new MainFrame();
-                    //关闭当前界面
+                    System.out.println("进入主界面");
+
 
                 } else if("".equals(userName) || "".equals(password)){
                     //不能为空

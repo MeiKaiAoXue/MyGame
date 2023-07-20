@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Gold extends Obstacle implements PaintElement{
     public Gold(int y) {
         super();
+        type = "Gold";
         this.setY(y);
         this.setWidth(20);
         this.setHeight(20);
@@ -22,7 +23,7 @@ public class Gold extends Obstacle implements PaintElement{
     }
 
     @Override
-    public void painElement(Graphics g) {
+    public void paintElement(Graphics g) {
         g.drawImage(this.getImage(), this.getX(), this.getY(), this.getWidth(), this.getHeight(),null);
     }
 }

@@ -1,5 +1,6 @@
 package com.msy.mygame.client.model;
 
+import com.msy.mygame.client.controller.GamePanel;
 import com.msy.mygame.client.view.GameFrame;
 import com.msy.mygame.client.view.LoginFrame;
 
@@ -87,10 +88,12 @@ public class Person implements PaintElement{
         this.score = score;
     }
 
+
+
     /*
         饿汉式单例模式
          */
-    private static final Person person = new Person(new LoginFrame().usernameTextField.getText());
+    private static final Person person = new Person(LoginFrame.userName);
     private Person(String userName) {
         this.userName = userName;
         //加载人物所有图片
@@ -99,8 +102,8 @@ public class Person implements PaintElement{
         image = images.get(0);
 
         //人物初始位置
-        x = 90;
-        y = 580;
+        x = WIDTH + 1;
+        y = 380;
 
         //玩家初始属性
         hp = 3;
@@ -128,7 +131,7 @@ public class Person implements PaintElement{
 
     //判断移出屏幕
     public boolean isOutOfBounds() {
-        if (x == 0) {
+        if (x <= 0) {
             return true;
         }
         return false;
@@ -138,19 +141,41 @@ public class Person implements PaintElement{
     //人物一直向前移动
     public void step() {
         image = images.get(index ++  % images.size());//切换人物图片
-        distance += 3;//玩家跑动距离自动增加
+        distance += 2;//玩家跑动距离自动增加
+        score = distance + gold;
     }
+
+    GamePanel gamePanel = GamePanel.getGamePanel();
+    private static boolean isJumping = false;
     //人物跳跃与回落
     public void jump() {
-        person.setY(y - 50);//可以加一个线程，让人物跳起有个动画效果，以后实现
-        try {
-            Thread.sleep(500);//模拟滞空
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (!isJumping) {
+            isJumping = true;
+            new Thread(() -> {
+                for (int i = 0; i < 50; i++) {
+                    y -= 5; // 调整跳跃的高度和速度
+                    gamePanel.repaint();
+                    try {
+                        Thread.sleep(20); // 调整跳跃的速度
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                for (int i = 0; i < 50; i++) {
+                    y += 5; // 调整跳跃下降的速度
+                    gamePanel.repaint();
+                    try {
+                        Thread.sleep(20); // 调整跳跃下降的速度
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                isJumping = false;
+            }).start();
         }
-
-        person.setY(y + 50);//回落
     }
+
+
     //滑翔需要监听连续两次的向上键，以后再实现，可以问GPT
     public void glide() {
     }
@@ -162,20 +187,20 @@ public class Person implements PaintElement{
         if (x >= GameFrame.WIDTH - this.WIDTH) {
             person.setX(GameFrame.WIDTH - this.WIDTH);
         } else {
-            person.setX(x + 50);
+            person.setX(x + WIDTH);
         }
     }
     //向左移动
     public void leftStep() {
-        if (x >= 50) {
-            person.setX(x - 50);
+        if (x >= WIDTH + 1) {
+            person.setX(x - WIDTH);
         } else {
-            person.setX(0);
+            person.setX(x);
         }
     }
 
     @Override
-    public void painElement(Graphics g) {
+    public void paintElement(Graphics g) {
         g.drawImage(image, x, y, getWIDTH(), getHEIGHT(),null);
     }
 }

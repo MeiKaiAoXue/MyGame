@@ -15,7 +15,7 @@ public class GameFrame extends JFrame {
 
     public GameFrame() {
 
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = GamePanel.getGamePanel();
         this.add(gamePanel);
         gamePanel.action();
         this.addKeyListener(gamePanel);
@@ -31,6 +31,8 @@ public class GameFrame extends JFrame {
         while(true){
             if(gamePanel.isOver){//因为isGameOver之前用static修饰,所以报错
                 dispose();//关闭窗口
+                System.out.println("关闭正式游戏界面");
+                break;
             }
             try {
                 Thread.sleep(2);

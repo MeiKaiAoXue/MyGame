@@ -8,6 +8,8 @@ import java.awt.*;
 public class Obstacle {
     private Image image;
 
+    String type = "";
+
     public Image getImage() {
         return image;
     }
