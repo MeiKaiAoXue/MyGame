@@ -14,22 +14,26 @@ public class GameFrame extends JFrame {
     public static final int HEIGHT = 600;
 
     public GameFrame() {
-
-        GamePanel gamePanel = GamePanel.getGamePanel();
+        System.out.println("1");
+        GamePanel gamePanel = new GamePanel();
+        System.out.println("2");
         this.add(gamePanel);
+        System.out.println("3");
         gamePanel.action();
+        System.out.println("4");
         this.addKeyListener(gamePanel);
-
+        System.out.println("5");
         //设置窗体属性
         this.setSize(WIDTH,HEIGHT);
         this.setLocationRelativeTo(null);//居中
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //this.setUndecorated(true);
         this.setIconImage(new ImageIcon("Image/115.png").getImage());//设置窗体图标
+        System.out.println("游戏界面可显示");
         this.setVisible(true);
 
         while(true){
-            if(gamePanel.isOver){//因为isGameOver之前用static修饰,所以报错
+            if(gamePanel.isOver){
                 dispose();//关闭窗口
                 System.out.println("关闭正式游戏界面");
                 break;

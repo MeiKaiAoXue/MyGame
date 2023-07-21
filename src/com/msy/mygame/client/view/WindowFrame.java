@@ -50,8 +50,9 @@ public class WindowFrame extends JFrame implements Runnable{
         dispose();
         System.out.println("关闭加载界面");
         //显示下一界面
-        new GameFrame();
         System.out.println("启动正式游戏界面");
+        new GameFrame();
+
 
     }
 }

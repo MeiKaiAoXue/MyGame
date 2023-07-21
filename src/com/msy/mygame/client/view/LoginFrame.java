@@ -140,7 +140,7 @@ public class LoginFrame extends JFrame {
         this.setVisible(true);
 
         //连接服务器
-        new ClientConnect();
+        new Thread(new ClientConnect()).start();
 
     }
 

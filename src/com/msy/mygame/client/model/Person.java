@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * 1.状态：血量，距离，金币得分，总分数
  * 2.动作：跑，跳，滑翔，溜滑
  */
-public class Person implements PaintElement{
+public class Person implements PaintElement, Serializable {
     private int hp;//人物的生命值
     private int distance;//人物跑动的距离
     private int gold;//人物捡拾的金币
@@ -145,35 +146,35 @@ public class Person implements PaintElement{
         score = distance + gold;
     }
 
-    GamePanel gamePanel = GamePanel.getGamePanel();
+    //GamePanel gamePanel = GamePanel.getGamePanel();
     private static boolean isJumping = false;
     //人物跳跃与回落
-    public void jump() {
-        if (!isJumping) {
-            isJumping = true;
-            new Thread(() -> {
-                for (int i = 0; i < 50; i++) {
-                    y -= 5; // 调整跳跃的高度和速度
-                    gamePanel.repaint();
-                    try {
-                        Thread.sleep(20); // 调整跳跃的速度
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                for (int i = 0; i < 50; i++) {
-                    y += 5; // 调整跳跃下降的速度
-                    gamePanel.repaint();
-                    try {
-                        Thread.sleep(20); // 调整跳跃下降的速度
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                isJumping = false;
-            }).start();
-        }
-    }
+//    public void jump() {
+//        if (!isJumping) {
+//            isJumping = true;
+//            new Thread(() -> {
+//                for (int i = 0; i < 50; i++) {
+//                    y -= 5; // 调整跳跃的高度和速度
+//                    gamePanel.repaint();
+//                    try {
+//                        Thread.sleep(20); // 调整跳跃的速度
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                for (int i = 0; i < 50; i++) {
+//                    y += 5; // 调整跳跃下降的速度
+//                    gamePanel.repaint();
+//                    try {
+//                        Thread.sleep(20); // 调整跳跃下降的速度
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                isJumping = false;
+//            }).start();
+//        }
+//    }
 
 
     //滑翔需要监听连续两次的向上键，以后再实现，可以问GPT

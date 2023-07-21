@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class GamePanel extends JPanel implements KeyListener {
     Person person = Person.getPerson();//获取人物对象
+    OtherPerson otherPerson = OtherPerson.getOtherPerson();
     public static boolean isOver = false;
     public static boolean flag = true;//游戏继续标记
     Image gameBackground;//背景图片
@@ -43,9 +44,10 @@ public class GamePanel extends JPanel implements KeyListener {
     Queue<Gold> golds = new LinkedList<>();//金币
 
 
-    private static final GamePanel gamePanel = new GamePanel();
-    public static GamePanel getGamePanel() {return gamePanel;}
-    private GamePanel() {
+//    private static final GamePanel gamePanel = new GamePanel();
+//    public static GamePanel getGamePanel() {return gamePanel;}
+    public GamePanel() {
+
         //加载图片文件
         try {
             gameBackground = ImageIO.read(new File("Image/cc.png"));//背景图片
@@ -79,6 +81,8 @@ public class GamePanel extends JPanel implements KeyListener {
         //绘制玩家
         person.paintElement(g);
         System.out.println("玩家绘制");
+        otherPerson.paintElement(g);
+        System.out.println("其他玩家绘制");
         //绘制小螃蟹
         for (Monster_1 monster_1:
              monster_1s) {
@@ -131,7 +135,7 @@ public class GamePanel extends JPanel implements KeyListener {
     private Random random = new Random();
     private String[] types = {"Missile", "Monster_1", "Obstacle_1"};
     //每个一段时间产生各种障碍物
-    public void obstacleGenerator() {
+    public void obstacleGenerator() {;
         index++;
         String type = types[random.nextInt(3)];
         if (index % 20 == 0) {
@@ -149,76 +153,7 @@ public class GamePanel extends JPanel implements KeyListener {
         if (index % 10 == 0) {
             golds.add(new Gold(random.nextInt(500)));
         }
-
-//        ScheduledExecutorService obstacleExecutor = Executors.newScheduledThreadPool(4);
-//        Random random = new Random();
-//        //随机产生金币
-//        Runnable createGold = () -> {
-//            while (!isOver) {
-//                int goldY = random.nextInt(80 + 1) + 500;
-//                golds.add(new Gold(goldY));
-//                try {
-//                    Thread.sleep(500);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        };
-//        //obstacleExecutor.scheduleAtFixedRate(createGold, 0, 1, TimeUnit.MILLISECONDS);
-//        new Thread(createGold);
-//        System.out.println("产生金币的线程启动");
-//
-//        //随机产生导弹
-//        Runnable createMissile = () -> {
-//            while (!isOver) {
-//                int missileY = random.nextInt(100 + 1) + 500;
-//                missiles.add(new Missile(missileY));
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        };
-//        //obstacleExecutor.scheduleAtFixedRate(createMissile, 0, 3, TimeUnit.MILLISECONDS);
-//        new Thread(createMissile);
-//        System.out.println("产生导弹的线程启动");
-//        //随机产生鱼叉
-//        Runnable createObstacle_1 = () -> {
-//            while (!isOver) {
-//                obstacle_1s.add(new Obstacle_1());
-//                try {
-//                    Thread.sleep(1500);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        };
-//        //obstacleExecutor.scheduleAtFixedRate(createObstacle_1, 0, 2, TimeUnit.MILLISECONDS);
-//        new Thread(createObstacle_1);
-//        System.out.println("产生鱼叉的线程启动");
-//        //随机产生螃蟹
-//        Runnable createMonster_1 = () -> {
-//            while (!isOver) {
-//                monster_1s.add(new Monster_1());
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        };
-//        //obstacleExecutor.scheduleAtFixedRate(createMonster_1, 0, 1, TimeUnit.MILLISECONDS);
-//        new Thread(createMonster_1);
-//        System.out.println("产生螃蟹的线程启动");
-        //游戏结束时关闭线程池
-//        while (true) {
-//            if (isOver) {
-//                obstacleExecutor.shutdown();
-//                System.out.println("线程池关闭");
-//            }
-//        }
-
+        System.out.println("产生金币");
     }
 
     //所有元素都在移动
@@ -226,6 +161,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //人物移动
 
         person.step();
+        otherPerson.step();
         System.out.println("人物移动");
         if (person.isOutOfBounds()) {
             isOver = true;
@@ -349,6 +285,7 @@ public class GamePanel extends JPanel implements KeyListener {
             //数据要清空吗？
         }
     }
+
 
     //写一个启动方法，创建一个线程专门实时绘制游戏
     public void action() {
