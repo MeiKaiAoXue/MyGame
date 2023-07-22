@@ -118,7 +118,7 @@ public class Person implements PaintElement, Serializable {
         y = 380;
 
         //玩家初始属性
-        hp = 3;
+        hp = 10000000;
         index = 0;
         score = 0;
         distance = 0;

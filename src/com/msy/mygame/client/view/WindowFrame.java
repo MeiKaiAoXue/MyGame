@@ -41,7 +41,7 @@ public class WindowFrame extends JFrame implements Runnable{
             bar.setValue(values[i]);
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(90);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

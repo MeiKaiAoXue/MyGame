@@ -167,7 +167,9 @@ public class GamePanel extends JPanel implements KeyListener {
         // 切换其他玩家图片
         for (OtherPerson otherN:
                 Room.others) {
-            otherN.step();
+            if (!(otherN.getId().equals(person.getShadowOther().getId()))) {
+                otherN.step();
+            }
         }
         if (person.isOutOfBounds()) {
             isOver = true;
@@ -296,7 +298,7 @@ public class GamePanel extends JPanel implements KeyListener {
                     repaint();
                     try {
                         Thread.sleep(45);
-                        System.out.println("绘图线程休息0.06秒");
+                        System.out.println("绘图线程休息0.045秒");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

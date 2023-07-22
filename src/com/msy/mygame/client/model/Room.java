@@ -10,7 +10,7 @@ public class Room {
     private String roomId = "";
     private String personNum = "";
     private Socket socket1, socket2 = null, socket3 = null;
-    public static ArrayList<OtherPerson> others = new ArrayList<>();;//目前只实现本地开一个房间
+    public static ArrayList<OtherPerson> others = new ArrayList<>(3);;//目前只实现本地开一个房间
 
     public Socket getSocket1() {
         return socket1;

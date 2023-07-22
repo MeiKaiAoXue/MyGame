@@ -12,6 +12,7 @@ public class SendPlayerInfoToServer implements Runnable{
     private PrintWriter out = ClientConnect.out;
     @Override
     public void run() {
+        System.out.println("进入发送本地玩家位置的方法");
         Person person = Person.getPerson();
         String sendString = "";
 
