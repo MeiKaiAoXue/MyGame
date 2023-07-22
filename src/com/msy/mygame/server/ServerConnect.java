@@ -90,6 +90,7 @@ public class ServerConnect {
                     //客户端传来有关玩家位置的数据
                     if (tokens[0].equals("playerInfo") ) {
                         //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
+                        System.out.println("接收客户端" + cSocket.getInetAddress().getHostAddress() + "的位置信息");
                         broadcastMessageToOther(receiveInput);
                     }
 

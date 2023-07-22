@@ -24,26 +24,30 @@ public class ReceivePlayerInfoFromServer implements Runnable{
                 String receiveInput = in.readLine();
                 String delimiter = ",";
                 String[] tokens = receiveInput.split(delimiter);
+                System.out.println("客户端： " + ClientConnect.cSocket.getInetAddress().getHostAddress() + " 切割位置字符串");
                 if (tokens[1].equals("1")) {
-                    synchronized (Room.others) {
+//                    synchronized (Room.others) {
                         //当此处改变位置的时候，其他玩家的绘图不能拿到锁
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherX(Integer.parseInt(tokens[2]));
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherY(Integer.parseInt(tokens[3]));
-                    }
+                        System.out.println("玩家 1 位置设置成功");
+                    //}
                 } else if (tokens[1].equals("2")) {
-                    synchronized (Room.others) {
+//                    synchronized (Room.others) {
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherX(Integer.parseInt(tokens[2]));
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherY(Integer.parseInt(tokens[3]));
-                    }
+                        System.out.println("玩家 2 位置设置成功");
+                    //}
                 } else if (tokens[1].equals("3")) {
-                    synchronized (Room.others) {
+//                    synchronized (Room.others) {
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherX(Integer.parseInt(tokens[2]));
                         Room.others.get(Integer.parseInt(tokens[1]) - 1).setOtherY(Integer.parseInt(tokens[3]));
-                    }
+                        System.out.println("玩家 3 位置设置成功");
+                    //}
                 }
             }
 
-            Thread.sleep(5);
+            Thread.sleep(10);
             //下一步是绘制其他玩家的位置图像，在哪里写这段代码，怎么写啊，想用一个点代替
             //在某一时刻，服务器将所有玩家的位置信息用集合存起来，然后遍历这个集合，
             //将此刻所有玩家的位置信息一起发送出去，最后再在每个客户端上用这些信息画出所有当前的位置图像

@@ -26,8 +26,9 @@ public class SendPlayerInfoToServer implements Runnable{
                 sendString = sendString.concat(Integer.toString(person.getY()));
 //                out = new PrintWriter(cSocket.getOutputStream(), true);
                 out.println(sendString);
+                System.out.println("客户端： " + ClientConnect.cSocket.getInetAddress().getHostAddress() + " 发送位置信息");
 
-                Thread.sleep(5);
+                Thread.sleep(10);
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

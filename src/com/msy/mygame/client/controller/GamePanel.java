@@ -81,39 +81,34 @@ public class GamePanel extends JPanel implements KeyListener {
         person.paintElement(g);
         System.out.println("玩家绘制");
 //        otherPerson.paintElement(g);
-        synchronized (Room.others) {//防止画的时候，ReceivePlayerInfoFromServer改变位置
+//        synchronized (Room.others) {//防止画的时候，ReceivePlayerInfoFromServer改变位置
             for (OtherPerson otherN:
                  Room.others) {
                 if (!(otherN.getId().equals(Person.getPerson().getShadowOther().getId()))) {
                     otherN.paintElement(g);
                 }
             }
-        }
-        System.out.println("其他玩家绘制");
+        //}
         //绘制小螃蟹
         for (Monster_1 monster_1:
              monster_1s) {
             monster_1.paintElement(g);
         }
-        System.out.println("螃蟹绘制");
         //绘制每一个鱼叉
         for (Obstacle_1 obstacle_1:
                 obstacle_1s) {
             obstacle_1.paintElement(g);
         }
-        System.out.println("鱼叉绘制");
         //绘制每一个导弹
         for (Missile missile:
                 missiles) {
             missile.paintElement(g);
         }
-        System.out.println("导弹绘制");
         //绘制每一个金币
         for (Gold gold:
                 golds) {
             gold.paintElement(g);
         }
-        System.out.println("金币绘制");
 
         //绘制玩家分数
         g.drawImage(score, 400, 50 ,null);
@@ -174,10 +169,8 @@ public class GamePanel extends JPanel implements KeyListener {
                 Room.others) {
             otherN.step();
         }
-        System.out.println("人物移动");
         if (person.isOutOfBounds()) {
             isOver = true;
-            System.out.println("人物死亡");
         }
 
 
@@ -186,10 +179,8 @@ public class GamePanel extends JPanel implements KeyListener {
         for (Gold gold:
              golds) {
             gold.step();
-            System.out.println("金币移动");
             if (gold.isOutOfBounds()) {
                 tempGold = gold;
-                System.out.println("金币死亡");
             }
         }
         golds.remove(tempGold);
@@ -198,10 +189,8 @@ public class GamePanel extends JPanel implements KeyListener {
         for (Missile missile:
              missiles) {
             missile.step();
-            System.out.println("导弹移动");
             if (missile.isOutOfBounds()) {
                 tempMissile = missile;
-                System.out.println("导弹死亡");
             }
         }
         missiles.remove(tempMissile);
@@ -210,10 +199,8 @@ public class GamePanel extends JPanel implements KeyListener {
         for (Monster_1 monster_1:
              monster_1s) {
             monster_1.step();
-            System.out.println("螃蟹移动");
             if (monster_1.isOutOfBounds()) {
                 tempMonster_1 = monster_1;
-                System.out.println("螃蟹死亡");
             }
         }
         monster_1s.remove(tempMonster_1);
@@ -222,10 +209,8 @@ public class GamePanel extends JPanel implements KeyListener {
         for (Obstacle_1 obstacle_1:
              obstacle_1s) {
             obstacle_1.step();
-            System.out.println("鱼叉移动");
             if (obstacle_1.isOutOfBounds()) {
                tempObstacle_1 = obstacle_1;
-                System.out.println("鱼叉死亡");
             }
         }
         obstacle_1s.remove(tempObstacle_1);
@@ -248,7 +233,6 @@ public class GamePanel extends JPanel implements KeyListener {
                 person.setHp(person.getHp() - 1);
                 tempMonster_1 = monster_1;
 
-                System.out.println("人物撞上螃蟹，螃蟹消失");
             }
         }
         monster_1s.remove(tempMonster_1);
@@ -259,7 +243,6 @@ public class GamePanel extends JPanel implements KeyListener {
             if (isCollidingWithObstacle(missile)) {
                 person.setHp(person.getHp() - 1);
                 tempMissile = missile;
-                System.out.println("人物撞上导弹，导弹消失");
             }
         }
         missiles.remove(tempMissile);
@@ -268,7 +251,6 @@ public class GamePanel extends JPanel implements KeyListener {
              obstacle_1s) {
             if (isCollidingWithObstacle(obstacle_1)) {
                 person.setX(person.getX() - 20);
-                System.out.println("人物撞上鱼叉，被推着走");
             }
             if (person.isOutOfBounds()) {
                 isOver = true;
@@ -281,7 +263,6 @@ public class GamePanel extends JPanel implements KeyListener {
             if (isCollidingWithObstacle(gold)) {
                 person.setGold(person.getGold() + 20);
                 tempGold = gold;
-                System.out.println("人物撞上金币，金币消失");
             }
         }
         golds.remove(tempGold);
@@ -307,21 +288,15 @@ public class GamePanel extends JPanel implements KeyListener {
                 if (flag) {
                     //执行一系列游戏逻辑，其中包含了游戏元素位置变化的代码
                     obstacleGenerator();
-                    System.out.println("障碍物生成成功");
                     stepAction();
-                    System.out.println("所有游戏元素移动执行成功");
                     collisionDifference();
-                    System.out.println("碰撞处理成功");
                     gameOver();
-                    System.out.println("判断游戏结束");
 
                     //重新绘制，自动调用paintComponent方法
                     repaint();
-                    System.out.println("重新绘图");
-
                     try {
-                        Thread.sleep(5);
-                        System.out.println("绘图线程休息0.05秒");
+                        Thread.sleep(45);
+                        System.out.println("绘图线程休息0.06秒");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
