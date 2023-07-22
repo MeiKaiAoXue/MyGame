@@ -1,7 +1,7 @@
 package com.msy.mygame.server;
 
 import com.msy.mygame.client.model.Room;
-import com.sun.security.ntlm.Server;
+
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -69,11 +69,14 @@ public class ServerConnect {
                             if (receiveInput != null) {
                                 break;
                             }
+                        System.out.println("服务器接收到null");
 
                     }
                     String[] tokens = receiveInput.split(delimiter);
+                    System.out.println("服务器切割字符串");
                     //客户端传来有关房间创建的数据
-                    if (tokens[0] == "roomInfo") {
+                    if (tokens[0].equals("roomInfo") ) {
+                        System.out.println("服务器创建房间中");
                         Room room = RoomManager.createRoom(tokens[1], tokens[2],cSocket);
                         System.out.println("房间创建成功");
                         if (!(room.getSocket1() == cSocket)) {//如果第一人不是当前客户端，则将该客户端添加到房间里；如果第一人是当前客户端，则不再添加该客户端到房间中，因为是以第一人来创建房间的
@@ -82,11 +85,10 @@ public class ServerConnect {
                         String fullFlag = room.isFull();//每次添加一个客户端进入房间后，都要判断是否满员
                         //将满员信息发给所有客户端，告诉他们是否开始游戏
                         broadcastMessageToAll(fullFlag);
-                        System.out.println("房间满员，可以开始游戏");
                     }
 
                     //客户端传来有关玩家位置的数据
-                    if (tokens[0] == "playerInfo") {
+                    if (tokens[0].equals("playerInfo") ) {
                         //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
                         broadcastMessageToOther(receiveInput);
                     }

@@ -3,7 +3,6 @@ package com.msy.mygame.client.controller;
 import com.msy.mygame.client.model.*;
 import com.msy.mygame.client.view.EndFrame;
 import com.msy.mygame.client.view.GameFrame;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPNE;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

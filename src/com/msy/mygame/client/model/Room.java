@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Room {
     private String roomId = "";
     private String personNum = "";
-    private Socket socket1 = null, socket2 = null, socket3 = null;
-    public static ArrayList<OtherPerson> others;//目前只实现本地开一个房间
+    private Socket socket1, socket2 = null, socket3 = null;
+    public static ArrayList<OtherPerson> others = new ArrayList<>();;//目前只实现本地开一个房间
 
     public Socket getSocket1() {
         return socket1;
@@ -28,9 +28,11 @@ public class Room {
         this.roomId = roomId;
         this.personNum = personNum;
         this.socket1 = socket;
-        others = new ArrayList<>();
-        others.add(new OtherPerson(socket1, "1"));
-        Person.getPerson().setShadowOther(others.get(0));
+
+        OtherPerson otherPerson = new OtherPerson(socket1, "1");
+        others.add(otherPerson);
+        Person.getPerson().setShadowOther(otherPerson);
+        System.out.println("房主已确定");
     }
 
     public String getPersonNum() {
@@ -53,12 +55,16 @@ public class Room {
     public void addPerson(Socket socket) {
         if (socket2 == null) {
             socket2 = socket;
-            others.add(new OtherPerson(socket2, "2"));
-            Person.getPerson().setShadowOther(others.get(1));
+            OtherPerson otherPerson = new OtherPerson(socket2, "2");
+            others.add(otherPerson);
+            Person.getPerson().setShadowOther(otherPerson);
+            System.out.println("第二位玩家进入房间");
         } else {
             socket3 = socket;
-            others.add(new OtherPerson(socket3, "3"));
-            Person.getPerson().setShadowOther(others.get(2));
+            OtherPerson otherPerson = new OtherPerson(socket3, "3");
+            others.add(otherPerson);
+            Person.getPerson().setShadowOther(otherPerson);
+            System.out.println("第三位玩家进入房间");
         }
 
         System.out.println("其他玩家加入房间");
@@ -74,9 +80,11 @@ public class Room {
             }
         } else if (personNum.equals("2")) {
             if (socket2 != null && socket3 == null) {
+                System.out.println("判断方法： 人数为 ture");
                 return "true";
             }
         }
+        System.out.println("判断方法： 人数为 false");
         return "false";
     }
 }

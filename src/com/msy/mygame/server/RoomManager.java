@@ -15,6 +15,7 @@ public class RoomManager {
         for (Room room:
              rooms) {
             if (room.getRoomId().equals(roomId)) {
+                System.out.println("返回已存在房间");
                 return room;
             }
         }
@@ -22,6 +23,7 @@ public class RoomManager {
         //创建新房间，以房主为第一人
         Room newRoom = new Room(roomId, personNum, socket);
         rooms.add(newRoom);
+        System.out.println("返回新创建的房间");
         return newRoom;
     }
 

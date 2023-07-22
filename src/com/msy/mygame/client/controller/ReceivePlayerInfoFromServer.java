@@ -11,13 +11,13 @@ import java.net.Socket;
 
 public class ReceivePlayerInfoFromServer implements Runnable{
 //    OtherPerson otherPerson = OtherPerson.getOtherPerson();
-    private Socket cSocket = ClientConnect.cSocket;
-    private BufferedReader in = null;
+//    private Socket cSocket = ClientConnect.cSocket;
+    private BufferedReader in = ClientConnect.in;
     @Override
     public void run() {
         //时刻获取其他玩家的位置信息
         try {
-            in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+//            in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
             while (!GamePanel.isOver) {
                 //在此处要判断是哪位其他玩家传来的位置消息，信息格式"playerInfo", "哪个player", "playerX", "playerY"
                 System.out.println("客户端正在接收其他玩家的位置数据");
@@ -52,13 +52,13 @@ public class ReceivePlayerInfoFromServer implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                if (in != null) {
+//                    in.close();
+//                }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
         }
     }
 }

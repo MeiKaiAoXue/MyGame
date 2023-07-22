@@ -13,8 +13,8 @@ public class ClientConnect implements Runnable{
     private static final String SERVER_IP = "192.168.147.7";
     private static final int PORT = 2023;
     static Socket cSocket = null;
-    private PrintWriter out = null;
-    private BufferedReader in = null;
+    static PrintWriter out = null;
+    static BufferedReader in = null;
 
 
     public void run() {
@@ -22,6 +22,8 @@ public class ClientConnect implements Runnable{
             //创建客户端Socket
             cSocket = new Socket("127.0.0.1", PORT);
             System.out.println("已连接服务器 : " + SERVER_IP);
+            in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+            out = new PrintWriter(cSocket.getOutputStream(),true);
 
 //            /*多线程处理实现同时发送自身数据，接收来自服务器的播报数据*/
 //            Thread inputThread = new Thread(() -> {
@@ -99,6 +101,14 @@ public class ClientConnect implements Runnable{
                 if (cSocket != null) {
                     cSocket.close();
                     System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的套接字关闭");
+                }
+                if (in != null) {
+                    in.close();
+                    System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的输入流关闭");
+                }
+                if (out != null) {
+                    out.close();
+                    System.out.println("客户端 " + cSocket.getInetAddress() + " ： 我的输出流关闭");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
