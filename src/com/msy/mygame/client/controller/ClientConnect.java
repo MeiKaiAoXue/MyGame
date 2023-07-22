@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class ClientConnect implements Runnable{
     //网络变量
-    private static final String SERVER_IP = "172.27.149.212";
+    private static final String SERVER_IP = "192.168.147.7";
     private static final int PORT = 2023;
     static Socket cSocket = null;
     private PrintWriter out = null;

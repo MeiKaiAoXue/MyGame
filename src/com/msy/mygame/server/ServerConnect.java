@@ -63,7 +63,14 @@ public class ServerConnect {
                 String delimiter = ",";
                 in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
                 while (true) {
-                    String receiveInput = in.readLine();
+                    String receiveInput = null;
+                    while (true) {
+                            receiveInput = in.readLine();
+                            if (receiveInput != null) {
+                                break;
+                            }
+
+                    }
                     String[] tokens = receiveInput.split(delimiter);
                     //客户端传来有关房间创建的数据
                     if (tokens[0] == "roomInfo") {
