@@ -16,8 +16,7 @@ import java.net.Socket;
 /**
  * 游戏登陆界面
  * 1.输入用户名和密码
- * 2.输入服务器ip,端口
- * 3.TCP连接服务器
+ * 2.TCP连接服务器
  */
 public class LoginFrame extends JFrame {
 
@@ -39,14 +38,14 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         //初始化GUI变量
-        networkLabel = new JLabel("ip: ");
-        networkLabel.setBounds(70,200,40, 30);
+//        networkLabel = new JLabel("ip: ");
+//        networkLabel.setBounds(70,200,40, 30);
         //this.add(networkLabel);
 
-        networkTextField = new JTextField();
-        networkTextField.setBorder(BorderFactory.createLoweredBevelBorder());
-        networkTextField.setOpaque(false);
-        networkTextField.setBounds(110,200,150,30);
+//        networkTextField = new JTextField();
+//        networkTextField.setBorder(BorderFactory.createLoweredBevelBorder());
+//        networkTextField.setOpaque(false);
+//        networkTextField.setBounds(110,200,150,30);
         //this.add(networkTextField);
 
         usernameLabel = new JLabel("username: ");
@@ -69,6 +68,8 @@ public class LoginFrame extends JFrame {
         pwTextField.setOpaque(false);//设置背景透明
         this.add(pwTextField);
 
+
+        //还未实现注册功能，需要连接数据库的时候写
         signupButton = new JButton("signup");
         signupButton.setBounds(310,360,100,30);
         signupButton.addActionListener(new ActionListener() {
@@ -87,7 +88,7 @@ public class LoginFrame extends JFrame {
                 System.out.println("已点击登陆按钮");
                 userName = usernameTextField.getText();
                 password = pwTextField.getText();
-                if (userName.equals("mei") && password.equals("123456")) {
+                if ((userName.equals("mei") && password.equals("123456")) || (userName.equals("tao") && password.equals("123456")) ) {
                     //登陆成功
                     JOptionPane.showMessageDialog(null, "欢迎 " + userName + " 来到我的游戏");
 
@@ -123,8 +124,6 @@ public class LoginFrame extends JFrame {
             }
         });
         this.add(cancelButton);
-
-
 
 
         //创建背景面板，添加到窗体上

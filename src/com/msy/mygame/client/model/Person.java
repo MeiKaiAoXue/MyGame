@@ -5,6 +5,7 @@ import com.msy.mygame.client.view.GameFrame;
 import com.msy.mygame.client.view.LoginFrame;
 
 import javax.imageio.ImageIO;
+import javax.print.attribute.standard.MediaSize;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,16 @@ import java.util.ArrayList;
  * 2.动作：跑，跳，滑翔，溜滑
  */
 public class Person implements PaintElement, Serializable {
+    private OtherPerson shadowOther = null;
+
+    public OtherPerson getShadowOther() {
+        return shadowOther;
+    }
+
+    public void setShadowOther(OtherPerson shadowOther) {
+        this.shadowOther = shadowOther;
+    }
+
     private int hp;//人物的生命值
     private int distance;//人物跑动的距离
     private int gold;//人物捡拾的金币

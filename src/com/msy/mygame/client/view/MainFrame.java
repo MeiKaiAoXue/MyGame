@@ -22,7 +22,7 @@ import java.io.IOException;
 public class MainFrame extends JFrame implements MouseListener {
     JLabel start = null, help = null, exit = null;
     JButton single, more;
-    JTextField roomId, num;
+    JTextField roomId, personNum;
     public MainFrame() {
         //单人游戏按钮
         single = new JButton("单人游戏");
@@ -46,11 +46,11 @@ public class MainFrame extends JFrame implements MouseListener {
         this.add(roomId);
 
         //添加房间人数
-        num = new JTextField();
-        num.setBounds(690,300,30,30);
-        num.setOpaque(true);
-        num.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.add(num);
+        personNum = new JTextField();
+        personNum.setBounds(690,300,30,30);
+        personNum.setOpaque(true);
+        personNum.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.add(personNum);
 
         //多人游戏按钮
         more = new JButton("多人游戏");
@@ -58,12 +58,8 @@ public class MainFrame extends JFrame implements MouseListener {
         more.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String roomNum = roomId.getText();
-                String personNum = num.getText();
-                sendToServer(roomId, personNum);
-                waitOtherPlayer();
                 //启动等待界面
-                new Thread(new WaitFrame()).start();
+                new Thread(new WaitFrame(roomId.getText(), personNum.getText())).start();
                 //关闭当前界面
                 dispose();
             }
@@ -132,7 +128,7 @@ public class MainFrame extends JFrame implements MouseListener {
             //cardLayout.next(cardPanel);
 
         } else if (e.getSource().equals(help)) {
-            JOptionPane.showMessageDialog(null, "本开发者也不知道怎么帮助你！！！");
+            JOptionPane.showMessageDialog(null, "本开发者也不知道怎么帮助你！！！好自为之！！！");
         } else if (e.getSource().equals(exit)){
             System.out.println("退出主界面");
             dispose();

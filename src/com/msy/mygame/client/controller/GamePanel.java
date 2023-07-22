@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class GamePanel extends JPanel implements KeyListener {
     Person person = Person.getPerson();//获取人物对象
-    OtherPerson otherPerson = OtherPerson.getOtherPerson();
+//    OtherPerson otherPerson = OtherPerson.getOtherPerson();
     public static boolean isOver = false;
     public static boolean flag = true;//游戏继续标记
     Image gameBackground;//背景图片
@@ -81,7 +81,15 @@ public class GamePanel extends JPanel implements KeyListener {
         //绘制玩家
         person.paintElement(g);
         System.out.println("玩家绘制");
-        otherPerson.paintElement(g);
+//        otherPerson.paintElement(g);
+        synchronized (Room.others) {//防止画的时候，ReceivePlayerInfoFromServer改变位置
+            for (OtherPerson otherN:
+                 Room.others) {
+                if (!(otherN.getId().equals(Person.getPerson().getShadowOther().getId()))) {
+                    otherN.paintElement(g);
+                }
+            }
+        }
         System.out.println("其他玩家绘制");
         //绘制小螃蟹
         for (Monster_1 monster_1:
@@ -160,8 +168,13 @@ public class GamePanel extends JPanel implements KeyListener {
     public void stepAction() {
         //人物移动
 
-        person.step();
-        otherPerson.step();
+        person.step();//切换玩家图片
+//        otherPerson.step();
+        // 切换其他玩家图片
+        for (OtherPerson otherN:
+                Room.others) {
+            otherN.step();
+        }
         System.out.println("人物移动");
         if (person.isOutOfBounds()) {
             isOver = true;
@@ -308,8 +321,8 @@ public class GamePanel extends JPanel implements KeyListener {
                     System.out.println("重新绘图");
 
                     try {
-                        Thread.sleep(60);
-                        System.out.println("绘图线程休息0.06秒");
+                        Thread.sleep(5);
+                        System.out.println("绘图线程休息0.05秒");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

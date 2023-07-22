@@ -1,5 +1,6 @@
 package com.msy.mygame.server;
 
+import com.msy.mygame.client.model.Room;
 import com.sun.security.ntlm.Server;
 
 import java.io.*;
@@ -14,7 +15,7 @@ public class ServerConnect {
     private static final int PORT = 2023;//服务器侦听端口
     private static final int MAX = 10;
     private static ExecutorService executor = Executors.newFixedThreadPool(MAX);//线程池
-    private static final ConcurrentHashMap<Socket, PrintWriter> clientOutputStreams = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Socket, PrintWriter> clientOutputStreams = new ConcurrentHashMap<>();
 
     public ServerConnect() {
 
@@ -27,7 +28,7 @@ public class ServerConnect {
             while (true) {
                 //服务器等待连接
                 Socket cSocket = serverSocket.accept();
-                System.out.println("客户端连接成功" + cSocket.getInetAddress().getHostAddress());
+                System.out.println("客户端 : "+ cSocket.getInetAddress().getHostAddress() + " 连接成功" );
 
                 //用该套接字的输出流创建对象输出流，并加入到对象输出流的哈希表里
                 PrintWriter out = new PrintWriter(cSocket.getOutputStream(),true);
@@ -47,23 +48,47 @@ public class ServerConnect {
     线程处理器
      */
     class ClientHandler implements Runnable {
+        private RoomManager roomManager;
         private Socket cSocket = null;
         private PrintWriter out = null;
         private BufferedReader in = null;
         public ClientHandler(Socket cSocket, PrintWriter out) {
             this.cSocket = cSocket;
             this.out = out;
-
         }
 
         @Override
         public void run() {
             try {
+                String delimiter = ",";
                 in = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
                 while (true) {
-                    //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
-                    String receivedString = in.readLine();
-                    broadcastMessage(receivedString);
+                    String receiveInput = in.readLine();
+                    String[] tokens = receiveInput.split(delimiter);
+                    //客户端传来有关房间创建的数据
+                    if (tokens[0] == "roomInfo") {
+                        Room room = RoomManager.createRoom(tokens[1], tokens[2],cSocket);
+                        System.out.println("房间创建成功");
+                        if (!(room.getSocket1() == cSocket)) {//如果第一人不是当前客户端，则将该客户端添加到房间里；如果第一人是当前客户端，则不再添加该客户端到房间中，因为是以第一人来创建房间的
+                            room.addPerson(cSocket);
+                        }
+                        String fullFlag = room.isFull();//每次添加一个客户端进入房间后，都要判断是否满员
+                        //将满员信息发给所有客户端，告诉他们是否开始游戏
+                        broadcastMessageToAll(fullFlag);
+                        System.out.println("房间满员，可以开始游戏");
+                    }
+
+                    //客户端传来有关玩家位置的数据
+                    if (tokens[0] == "playerInfo") {
+                        //服务器时时刻刻接收来自某个客户端的对象数据，并广播给其他所有客户端
+                        broadcastMessageToOther(receiveInput);
+                    }
+
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,16 +96,16 @@ public class ServerConnect {
                 try {
                     if (in != null) {
                         in.close();
-                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 服务器输入流已断开");
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress().getHostAddress() + " 服务器输入流已断开");
                     }
 
                     if (out != null) {
                         out.close();
-                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 服务器输出流已断开");
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress().getHostAddress() + " 服务器输出流已断开");
                     }
                     if (cSocket != null) {
                         cSocket.close();
-                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress() + " 已断开");
+                        System.out.println("服务器： 客户端 " + cSocket.getInetAddress().getHostAddress() + " 已断开");
                     }
                     //客户端断开连接时，移除对应的输出流
                     if (!clientOutputStreams.contains(cSocket)) {
@@ -93,16 +118,30 @@ public class ServerConnect {
         }
 
         //向所有客户端播报数据的方法
-        private void broadcastMessage(String receivedString) {
+        private void broadcastMessageToOther(String receivedString) {
             //给客户端集合上锁，避免一个客户端同时接收两个其他客户端的位置，因为客户端接收时只有一个otherPerson对象
             synchronized (clientOutputStreams) {
-                for (PrintWriter out : clientOutputStreams.values()) {
-                    //写入缓存区并清空缓存，实现数据广播
-                    out.println(receivedString);
+                for (PrintWriter output : clientOutputStreams.values()) {
+                    //实现数据广播
+                    if (output != out) {
+                        output.println(receivedString);
+                        System.out.println("服务器转发PlayerInfo...");
+                    }
                 }
-                clientOutputStreams.notify();
             }
         }
+
+        private void broadcastMessageToAll(String receivedString) {
+            //给客户端集合上锁，避免一个客户端同时接收两个其他客户端的位置，因为客户端接收时只有一个otherPerson对象
+            synchronized (clientOutputStreams) {
+                for (PrintWriter output : clientOutputStreams.values()) {
+                    //实现数据广播
+                    output.println(receivedString);
+                    System.out.println("服务器转发RoomInfo...");
+                }
+            }
+        }
+
     }
 
     public static void main(String[] args) {
